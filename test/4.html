@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Card BG — Pink Arc Glow</title>
+  </head>
+  <body class="m-0 p-0 overflow-hidden">
+    <!-- Fixed-size card 500x188 in top-left corner -->
+    <div class="relative w-[500px] h-[188px] rounded-[18px] overflow-hidden">
+      <!-- Deep base -->
+      <div class="absolute inset-0 bg-[#1a0a17]"></div>
+
+      <!-- Radial arc gradient emerging from bottom-right corner -->
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_100%_100%,#f9a8d4_0%,#ec4899_25%,#7e22ce_55%,transparent_70%)] opacity-90"></div>
+
+      <!-- Secondary glow from top-left to balance composition -->
+      <div class="absolute -left-28 -top-28 w-72 h-72 bg-[#f0abfc] rounded-full opacity-25 blur-[90px]"></div>
+
+      <!-- Subtle circular texture fade along the arc -->
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_100%_100%,rgba(255,255,255,0.08)_0%,transparent_70%)] mix-blend-overlay"></div>
+
+      <!-- Light diagonal shimmer lines following the arc direction -->
+      <div class="absolute inset-0 bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.06)_0,rgba(255,255,255,0.06)_8px,transparent_8px,transparent_32px)] opacity-40 mix-blend-overlay"></div>
+    </div>
+  </body>
+</html

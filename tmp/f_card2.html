@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Card BG — Pink Aurora</title>
+  </head>
+  <body class="m-0 p-0 overflow-hidden">
+    <!-- Fixed-size card 500x188 in top-left corner -->
+    <div class="relative w-[500px] h-[188px] rounded-[18px] overflow-hidden">
+      <!-- Base layer -->
+      <div class="absolute inset-0 bg-[#1b0e1c]"></div>
+
+      <!-- Gradient sweep covering only ~65% left-to-right -->
+      <div
+        class="absolute inset-0 bg-gradient-to-tr from-[#44103d] via-[#8b2f66] to-[#f5a3c8] [mask-image:linear-gradient(95deg,black_0%,black_60%,transparent_82%,transparent_100%)] [mask-repeat:no-repeat]"
+      ></div>
+
+      <!-- Subtle pinkish glow in top-left corner -->
+      <div
+        class="absolute -left-20 -top-20 w-64 h-64 rounded-full bg-[#f9a8d4] opacity-40 blur-[80px]"
+      ></div>
+
+      <!-- Gentle lavender light in bottom-right -->
+      <div
+        class="absolute right-[-30px] bottom-[-40px] w-80 h-80 rounded-full bg-[#d8b4fe] opacity-25 blur-[90px]"
+      ></div>
+
+      <!-- Texture with light diagonal shimmer -->
+      <div
+        class="absolute inset-0 bg-[repeating-linear-gradient(120deg,rgba(255,255,255,0.08)_0,rgba(255,255,255,0.08)_14px,transparent_14px,transparent_40px)] opacity-40 mix-blend-overlay [mask-image:linear-gradient(100deg,black_0%,black_60%,transparent_85%)]"
+      ></div>
+
+      <div class="absolute w-full h-full flex">
+        <div class="relative h-[110px] w-[110px] top-5 left-5">
+          {% if avatar %}
+          <img
+            class="w-full h-full rounded-full opacity-75 border border-[#818cf8]"
+            src="{{ avatar }}"
+            alt="{{ username }}"
+          />
+          {% else %}
+          <div
+            class="w-full h-full flex items-center justify-center rounded-full bg-[#818cf8] text-white text-4xl font-bold opacity-75 border border-[#818cf8]"
+          >
+            {{ initials }}
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="flex-1">
+          <div
+            class="relative z-10 h-full w-full p-6 pl-16 flex flex-col justify-between"
+          >
+            <div class="w-full flex items-center pl-4">
+              <h2 class="text-white/90 text-3xl">{{ username }}</h2>
+            </div>
+
+            <div>
+              <div class="flex flex-col gap-1">
+                <p class="text-white/90 text-lg">Lvl {{ level }}</p>
+
+                <!-- Progress bar -->
+                <div
+                  class="relative flex items-center h-7 w-full border-2 border-gray-400 rounded-xl overflow-hidden"
+                >
+                  <span
+                    class="absolute left-0 top-0 bg-gray-800 h-7 rounded-xl"
+                    style="width: {{ progress_pct }}%;"
+                  ></span>
+                  <p class="w-full text-center text-white/90 z-10">
+                    {{ value }} / {{ max }}
+                  </p>
+                </div>
+
+                <!-- Stats -->
+                <div
+                  class="flex items-center justify-between text-white/90 text-sm"
+                >
+                  <p>Rank: {{ rank }}</p>
+                  <p>Top: {{ top }}</p>
+                  <p>Next: {{ max }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
