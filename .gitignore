@@ -26,18 +26,6 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-.claude
-
-# Database files
-*.db
-*.db-shm
-*.db-wal
-
-# Deployment files
-*.service
-cleanup_before_start.sh
-dump/
-
 # PyInstaller
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
@@ -148,7 +136,6 @@ celerybeat.pid
 
 # Environments
 .env
-.env_prod
 .envrc
 .venv
 env/

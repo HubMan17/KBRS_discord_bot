@@ -1,0 +1,35 @@
+[Unit]
+Description=KBRS Discord Bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/home/KBRS/kbrs_discord_bot
+Environment=PYTHONUNBUFFERED=1
+Environment=TZ=Europe/Moscow
+EnvironmentFile=-/home/KBRS/kbrs_discord_bot/.env
+
+# Убить старые процессы перед запуском
+ExecStartPre=/bin/bash -c 'pkill -f "python.*bot.py" || true'
+# Удалить Telegram webhook перед запуском (если был установлен)
+ExecStartPre=/bin/bash -c 'curl -s "https://api.telegram.org/bot${TG_BOT_TOKEN}/deleteWebhook" || true'
+ExecStartPre=/bin/sleep 2
+
+ExecStart=/home/KBRS/kbrs_discord_bot/.venv/bin/python -u /home/KBRS/kbrs_discord_bot/bot.py
+
+StandardOutput=journal
+StandardError=journal
+
+Restart=always
+RestartSec=5
+
+# Graceful shutdown
+KillMode=mixed
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
