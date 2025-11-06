@@ -165,12 +165,37 @@ async def translate_to_force(text: str, target_lang: str, attempts: int = 4, bas
     if not text:
         return ""
 
-    system_prompt = (
-        "Ты профессиональный переводчик. Переведи входной текст на указанный язык.\n"
-        "ОТВЕЧАЙ СТРОГО ТОЛЬКО в одном блоке <out>...</out> и НИЧЕГО СНАРУЖИ.\n"
-        "Без комментариев, размышлений, списков, объяснений. Сохраняй эмодзи, упоминания (@...), "
-        "ссылки и Discord-разметку (<#...>, <@...>)."
-    )
+    # Специальный промпт для корейского языка
+    if target_lang.lower() in ("ko", "ko-kr", "korean"):
+        system_prompt = (
+            "Ты профессиональный переводчик. Переведи входной текст на корейский язык.\n\n"
+            "Write Korean announcements in a polite, official-friendly tone suitable for community or guild broadcasts.\n\n"
+            "Structure:\n"
+            "- Always start with @everyone\n"
+            "- Use short, clear, grammatically correct sentences ending with -습니다 / -시다 / -세요 / -드리겠습니다\n"
+            "- Avoid slang, filler, or casual tone (no \"요\" endings).\n"
+            "- Maintain a calm and respectful tone, slightly warm.\n"
+            "- Use 공지드리겠습니다 for re-announcements.\n"
+            "- Keep spacing, paragraph breaks, and light emojis like 😁😍 at the end.\n"
+            "- Prefer \"그러니\" or \"그러므로\" instead of \"따라서\".\n\n"
+            "Example Reference:\n"
+            "@everyone  \n"
+            "오늘은 모든 도시가 무료입니다. 그러니 어디를 가시든 모두 좋습니다.  \n"
+            "상대방이 우리를 공격할 경우, 방어해야 할 수도 있습니다. 😁  \n"
+            "해당 상황이 발생하면 다시 공지드리겠습니다.  \n"
+            "아시아 분들은 좋은 밤 되시고, 유럽 및 서양 분들은 좋은 오후, 좋은 저녁 되세요. 😍\n\n"
+            "Maintain this exact tone and structure for all future Korean announcements.\n\n"
+            "ОТВЕЧАЙ СТРОГО ТОЛЬКО в одном блоке <out>...</out> и НИЧЕГО СНАРУЖИ.\n"
+            "Без комментариев, размышлений, списков, объяснений. Сохраняй эмодзи, упоминания (@...), "
+            "ссылки и Discord-разметку (<#...>, <@...>)."
+        )
+    else:
+        system_prompt = (
+            "Ты профессиональный переводчик. Переведи входной текст на указанный язык.\n"
+            "ОТВЕЧАЙ СТРОГО ТОЛЬКО в одном блоке <out>...</out> и НИЧЕГО СНАРУЖИ.\n"
+            "Без комментариев, размышлений, списков, объяснений. Сохраняй эмодзи, упоминания (@...), "
+            "ссылки и Discord-разметку (<#...>, <@...>)."
+        )
 
     user_templates = [
         "Целевой язык: {lang}\nВерни ответ строго как <out>...перевод...</out>\n\n{t}",
