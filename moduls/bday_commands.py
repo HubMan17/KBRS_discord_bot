@@ -121,12 +121,12 @@ async def setup_bday_commands(bot: commands.Bot, tree: app_commands.CommandTree)
             for row in items:
                 uid = int(row["discord_id"]); days = int(row["days_left"])
                 member = interaction.guild.get_member(uid)
-                mention = member.mention if member else f"<@{uid}>"
+                display_name = member.display_name if member else f"User#{uid}"
                 try:
                     d = datetime.fromisoformat(row["next_occurrence"]); date_str = d.strftime("%b %d")
                 except Exception:
                     date_str = row.get("next_occurrence", "")
-                lines.append(f"{mention} — {date_str} ({_fmt_days_left(days)})")
+                lines.append(f"{display_name} — {date_str} ({_fmt_days_left(days)})")
 
             await send_reply(interaction, "🎂 Upcoming birthdays:\n" + "\n".join(lines), ephemeral=ephemeral)
         except Exception as e:
@@ -207,12 +207,12 @@ async def setup_bday_commands(bot: commands.Bot, tree: app_commands.CommandTree)
             uid = int(row["discord_id"])
             days = int(row["days_left"])
             member = ctx.guild.get_member(uid)
-            mention = member.mention if member else f"<@{uid}>"
+            display_name = member.display_name if member else f"User#{uid}"
             try:
                 d = datetime.fromisoformat(row["next_occurrence"])
                 date_str = d.strftime("%b %d")
             except Exception:
                 date_str = row.get("next_occurrence", "")
-            lines.append(f"{mention} — {date_str} ({_fmt_days_left(days)})")
+            lines.append(f"{display_name} — {date_str} ({_fmt_days_left(days)})")
 
         await ctx.send("🎂 Upcoming birthdays:\n" + "\n".join(lines))
