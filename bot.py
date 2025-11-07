@@ -330,6 +330,7 @@ async def on_ready():
     await import_module("moduls.activity_commands").setup_activity_commands(bot, tree)
     await import_module("moduls.help_command").setup_help_commands(bot, tree)
     await import_module("moduls.userinfo_command").setup_userinfo_commands(bot, tree)
+    await import_module("moduls.achievements_command").setup_achievements_commands(bot, tree)
 
     # sync slash (опционально)
     if os.getenv("SYNC_SLASH", "false").lower() == "true":
@@ -497,6 +498,12 @@ async def on_message(message: discord.Message):
                         print("[level-up] No permission to send in current channel")
                     except Exception as e:
                         print("[level-up] Fallback send failed:", e)
+
+            # Check achievements after XP award
+            try:
+                api.check_achievements(uid, trigger_event="message_sent")
+            except Exception as e:
+                print(f"[achievements] check_achievements(message) error: {e}")
         except Exception as e:
             print("add_xp(message) error:", e)
 
@@ -577,6 +584,12 @@ async def on_raw_reaction_add(payload: discord.RawReactionActionEvent):
                         await ch.send(f"🎉 {member.mention} reached **level {data.get('level', 0)}!**")
                     except Exception as e:
                         print("[level-up] fallback public send failed:", e)
+
+        # Check achievements after XP award
+        try:
+            api.check_achievements(member.id, trigger_event="reaction_added")
+        except Exception as e:
+            print(f"[achievements] check_achievements(reaction) error: {e}")
     except Exception as e:
         print("add_xp(reaction) error:", e)
 
@@ -607,6 +620,12 @@ async def on_member_join(member: discord.Member):
         api.sync_members([{"discord_id": member.id, "username": member.display_name}])
     except Exception as e:
         print("[welcome] sync_members error:", e)
+
+    # Check join_server achievement
+    try:
+        api.check_achievements(member.id, trigger_event="member_join")
+    except Exception as e:
+        print(f"[achievements] check_achievements(join) error: {e}")
 
     try:
         ch = await get_welcome_channel(member.guild)

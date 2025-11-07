@@ -128,4 +128,47 @@ class ApiClient:
     def bulk_emoji(self, events: list[dict]):      return self.send_bulk("/events/emoji_usage/bulk", events)
     def bulk_xp(self, events: list[dict]):         return self.send_bulk("/events/xp/bulk", events)
 
+    def check_achievements(self, discord_id: int, trigger_event: str | None = None):
+        """Trigger achievement check for a user."""
+        self.ensure_token()
+        payload = {"discord_id": discord_id}
+        if trigger_event:
+            payload["trigger_event"] = trigger_event
+        r = self.session.post(
+            f"{API_BASE}/achievements/check/",
+            json=payload,
+            headers=self._auth_headers(),
+            timeout=15
+        )
+        r.raise_for_status()
+        return r.json()
+
+    def get_user_achievements(self, discord_id: int, category: str | None = None, unlocked_only: bool = False):
+        """Get user's achievements with progress."""
+        self.ensure_token()
+        payload = {"discord_id": discord_id, "unlocked_only": unlocked_only}
+        if category:
+            payload["category"] = category
+        r = self.session.post(
+            f"{API_BASE}/achievements/user/",
+            json=payload,
+            headers=self._auth_headers(),
+            timeout=15
+        )
+        r.raise_for_status()
+        return r.json()
+
+    def get_achievement_stats(self, discord_id: int):
+        """Get detailed achievement statistics for a user."""
+        self.ensure_token()
+        payload = {"discord_id": discord_id}
+        r = self.session.post(
+            f"{API_BASE}/achievements/stats/",
+            json=payload,
+            headers=self._auth_headers(),
+            timeout=15
+        )
+        r.raise_for_status()
+        return r.json()
+
 api = ApiClient()
