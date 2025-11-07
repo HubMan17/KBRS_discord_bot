@@ -214,11 +214,15 @@ async def translate_to_force(text: str, target_lang: str, attempts: int = 4, bas
             if not out:
                 raise RuntimeError("empty <out> block")
 
-            # простая валидация для отдельных языков (при желании можно расширить)
-            if target_lang.lower().startswith("ru") and not CYRILLIC_RX.search(out):
-                raise RuntimeError("expected Cyrillic for RU target")
-            if target_lang.lower().startswith(("zh", "ja")) and not CJK_RX.search(out):
-                raise RuntimeError("expected CJK characters for target")
+            # Гибкая валидация для отдельных языков
+            # Проверяем только если в тексте есть буквы (игнорируем тексты из одних эмодзи/символов)
+            has_letters = any(ch.isalpha() for ch in out)
+
+            if has_letters:
+                if target_lang.lower().startswith("ru") and not CYRILLIC_RX.search(out):
+                    raise RuntimeError("expected Cyrillic for RU target")
+                if target_lang.lower().startswith(("zh", "ja", "ko")) and not CJK_RX.search(out):
+                    raise RuntimeError("expected CJK characters for target")
 
             return out
         except Exception as e:
