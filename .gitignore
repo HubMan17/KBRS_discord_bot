@@ -136,7 +136,9 @@ celerybeat.pid
 
 # Environments
 .env
-.env*
+.env_prod
+.env.local
+.env.*.local
 .envrc
 .venv
 env/
@@ -144,6 +146,16 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+# KBRS Bot specific
+bridge.db
+bridge.db-shm
+bridge.db-wal
+*.db
+*.db-journal
+logs/
+dump/
+*.log
 
 .claude
 
